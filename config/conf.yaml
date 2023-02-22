@@ -1,0 +1,3 @@
+tokenizer : tokenizers/tok.json
+
+cache : .cache

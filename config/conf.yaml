@@ -1,3 +1,37 @@
-tokenizer : tokenizers/tok.json
 
+# TRAIN VAL TEST specification:
+# Please edit the train test val fields below to specify
+# your data splits. 
+# Note that this program expects for all folders specified below
+# to contain subdirectories of audio/ and labels/ as shown:
+#
+# data/dev-clean/
+# ├── audio
+# │   ├── 1272-128104-0000.flac
+# │   ├── 1272-128104-0001.flac
+# │   └── 8842-304647-0013.flac
+# │   .
+# │   .
+# │   .
+# └── labels
+#     ├── 1272-128104.trans.txt
+#     └── 8842-304647.trans.txt
+#     .
+#     .
+#     .
+#
+# If your dataset is not in this format (i.e. if you downloaded the 
+# LibriSpeech dataset), you can use restructure_folder() from utils.genutils.py
+# to convert the LibriSpeech format to the format described above.
+
+val: ["data/dev-clean", "data/dev-other"]
+test: ["data/test-clean", "data/test-other"]
+train: ["data/train-clean-100"]
+
+
+
+
+
+tokenizer : tokenizers/tok.json
 cache : .cache
+

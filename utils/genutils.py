@@ -22,7 +22,7 @@ def mkdir(filepath):
     tokens = fpath.split("/")
     print(tokens)
     print(fpath)
-    if not tokens[-1].startswith("."):
+    if len(os.path.splitext(tokens[-1])[0]) > 0 and len(os.path.splitext(tokens[-1])[1]) > 0:
         os.makedirs("/".join(tokens[:-1]), exist_ok=True)
         with open(fpath, "w") as f:
             f.write('\n')

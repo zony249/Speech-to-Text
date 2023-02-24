@@ -2,10 +2,12 @@ import os
 import pathlib
 import glob
 from pathlib import Path
-from yaml import load
+import yaml
 from tqdm import tqdm
 import shutil
 
+
+from opt import Opt
 
 
 def mkdir(filepath):
@@ -16,13 +18,19 @@ def mkdir(filepath):
     will be a file. Otherwise, the last element will
     be a directory.
     """
-    tokens = filepath.split("/")
-    if "." in filepath:
+    fpath = str(Path(filepath))
+    tokens = fpath.split("/")
+    print(tokens)
+    print(fpath)
+    if not tokens[-1].startswith("."):
         os.makedirs("/".join(tokens[:-1]), exist_ok=True)
-        with open(filepath, "w") as f:
+        with open(fpath, "w") as f:
             f.write('\n')
     else: 
-        os.makedirs(filepath, exist_ok=True)
+        os.makedirs(fpath, exist_ok=True)
+
+def rmdir(filepath):
+    shutil.rmtree(filepath, ignore_errors=True)
 
 
 def restructure_folder(dirname, ext):
@@ -68,7 +76,20 @@ def restructure_folder(dirname, ext):
             shutil.rmtree(x, ignore_errors=True)
             # print(x)
 
-            
+
+def parse_config(config_filename):
+    """
+    Parses the config YAML file and updates the Opt 
+    environment class
+
+    @param config_filename (str): filename to the YAML file
+    """
+    with open(config_filename, "r") as f:
+        items = yaml.safe_load(f)
+        for key in items:
+            setattr(Opt, key, items[key])
+
+    print(Opt.info())
 
 
 if __name__ == "__main__":
@@ -78,8 +99,14 @@ if __name__ == "__main__":
     # mkdir("dir1/dir2/dir3/file.py")
     # mkdir("dir1/dir2/dir3/file")
 
-    restructure_folder("data/dev-clean/", "flac")
-    restructure_folder("data/dev-other/", "flac")
-    restructure_folder("data/test-clean/", "flac")
-    restructure_folder("data/test-other/", "flac")
-    restructure_folder("data/train-clean-100/", "flac")
+    # restructure_folder("data/dev-clean/", "flac")
+    # restructure_folder("data/dev-other/", "flac")
+    # restructure_folder("data/test-clean/", "flac")
+    # restructure_folder("data/test-other/", "flac")
+    # restructure_folder("data/train-clean-100/", "flac")
+
+    parse_config("config/conf.yaml")
+
+    os.makedirs("test/testing", exist_ok=True)
+    os.makedirs("test/.testing", exist_ok=True)
+    os.makedirs("test/testing.txt", exist_ok=True)
